@@ -1,6 +1,6 @@
 ## Ignore assets
 node_modules
-dist_*
+dist
 
 ## Ignore sensitive files
 .npmrc
