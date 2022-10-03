@@ -1,2 +1,8 @@
+## Ignore assets
 node_modules
-.editorconfig
+dist_*
+
+## Ignore sensitive files
+.npmrc
+.env
+
