@@ -62,6 +62,43 @@ module.exports = {
     target: "web",
 
     optimization: {
+        automaticNameDelimiter: "-",
+        maxSize: 200000,
+        minSize: 10000,
+        hidePathInfo: false,
+        maxAsyncRequests: 10,
+        cacheGroups: {
+            default: false,
+            common: {
+                test: /[\\/]node_modules[\\/]/,
+                chunks: "all",
+                name: (module, chunks, cacheGroupsKey) => {
+                    const moduleFileName = module.identifier().split("/").reduceRight(item => item);
+                    const allChunksName = chunks.map(item => item.name).sort().join("-");
+                    return `${cacheGroupsKey}-${allChunksName}-${moduleFileName}`;
+                }
+            }
+        }
+    },
 
-    }
+    plugins: [
+        new HTMLWebpackPlugin({
+            filename: "../page/index.html",
+            inject: true,
+            template: path.resolve(__dirname, "./resources/index.html"),
+            templateParameters: {
+                title: "OAuth In Action",
+            },
+        }),
+        new MiniCSSExtractPlugin({
+            filename: "styles/[name].css",
+        }),
+    ],
+
+    watch: true,
+    watchOptions: {
+        poll: 1000,
+        aggregateTimeout: 200,
+        ignored: /node_modules/,
+    },
 }
